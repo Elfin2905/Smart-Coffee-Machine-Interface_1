@@ -59,6 +59,10 @@ export default function App() {
     return localStorage.getItem('defaultProfileId');
   });
 
+  //clare storafe for profiles
+ 
+
+
   const [profiles, setProfiles] = useState<Profile[]>([
   {
     id: 'markus',
