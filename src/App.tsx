@@ -212,6 +212,8 @@ const getFavoriteDrinkImage = () => {
   const interfaceStyles = [
     { name: 'Modern', icon: '✨' },
     { name: 'Elegant', icon: '💎' },
+    { name: 'Verspielt', icon: '🎨' },
+    { name: 'Vintage', icon: '🕰️' },
     { name: 'Weihnachten', icon: '🎄' }
   ];
 
@@ -583,7 +585,7 @@ const getFavoriteDrinkImage = () => {
               <div className="text-xl relative z-10 transition-transform duration-300" style={{ color: theme.textPrimary }}>Milch & Wasser</div>
             </div>
 
-            {/* Barista Modus */}
+            {/* Barista Modus icon ersetzen */}
             <div 
               className={`group rounded-3xl p-8 relative overflow-hidden ${theme.glassEffect} border transition-all duration-500 cursor-pointer active:scale-95`}
               style={{
@@ -616,7 +618,7 @@ const getFavoriteDrinkImage = () => {
             <Home className="w-10 h-10" />
           </button>
 
-          {/* Pflege */}
+          {/* Pflege  bearbeiten icon*/} 
           <button 
             className="text-white/40 active:text-white transition-all active:scale-90"
             onClick={() => setShowPflege(true)}
@@ -936,7 +938,7 @@ const getFavoriteDrinkImage = () => {
                     </div>
                   )}
 
-                  {/* Action Buttons */}
+                  {/* Action Buttons Löschen hinzufügen */}
                   {!showKeyboard && (
                     <div className="flex gap-3 pt-2">
                       <button
