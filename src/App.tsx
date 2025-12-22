@@ -676,7 +676,7 @@ const getFavoriteDrinkImage = () => {
                         background: activeProfile.id === profile.id ? theme.accentGlow : 'rgba(255, 255, 255, 0.05)'
                       }}
                     >
-                      {/* Edit Profile Icon */}
+                      {/* Edit Profile Icon Button Icon */}
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -747,7 +747,9 @@ const getFavoriteDrinkImage = () => {
 
               {/* Add New Profile Edit */}
               
+              {/* Add New Lösch Button */}
 
+              
               {/* Add New Profile Button */}
               <button 
                 onClick={(e) => {
@@ -1269,6 +1271,7 @@ const getFavoriteDrinkImage = () => {
                     }}
                     className="group p-4 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-[#D4A373]/50 transition-all active:scale-95 overflow-hidden"
                   >
+                     {/* main menu Kaffee Klassijer */}
                     <div className="flex flex-col items-center gap-3">
                       <div className="w-20 h-20 rounded-xl overflow-hidden">
                         <ImageWithFallback 

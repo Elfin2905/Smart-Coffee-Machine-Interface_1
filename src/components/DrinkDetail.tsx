@@ -120,7 +120,7 @@ export function DrinkDetail({
               src={getDrinkImage()}
               alt={selectedDrink}
               className={
-                selectedDrink === 'Latte Macchiato' || selectedDrink === 'Milch' || selectedDrink === 'Heißes Wasser'
+                selectedDrink === 'Latte Macchiato' || selectedDrink === 'Milch' || selectedDrink === 'Heißes Wasser'  || selectedDrink === 'Espresso'
                   ? 'w-32 h-32 object-contain relative z-10' 
                   : 'w-64 h-64 object-contain relative z-10'
               }
