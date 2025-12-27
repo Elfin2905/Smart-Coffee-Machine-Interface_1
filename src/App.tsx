@@ -729,37 +729,37 @@ const getFavoriteDrinkImageSize = () => {
                     >
                       {/* Delete Button (unter Edit) */}
                       <div className="absolute top-3 right-3 flex flex-col gap-2 z-10">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsEditMode(true);
+                          setEditingProfileId(profile.id);
+                          setNewProfileName(profile.name);
+                          setNewProfileColor(profile.color);
+                          setNewProfileColorTo(profile.colorTo);
+                          setNewProfileCoffee(profileFavorites[profile.id] || 'Espresso');
+                          setNewProfileStyle(profile.style);
+                          setShowProfileOverlay(false);
+                          setShowAddProfile(true);
+                        }}
+                        className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center"
+                      >
+                        <Edit3 className="w-4 h-4" style={{ color: theme.textSecondary }} />
+                      </button>
+
+                      {profile.id !== 'gast' && (
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            setIsEditMode(true);
-                            setEditingProfileId(profile.id);
-                            setNewProfileName(profile.name);
-                            setNewProfileColor(profile.color);
-                            setNewProfileColorTo(profile.colorTo);
-                            setNewProfileCoffee(profileFavorites[profile.id] || 'Espresso');
-                            setNewProfileStyle(profile.style);
-                            setShowProfileOverlay(false);
-                            setShowAddProfile(true);
+                            handleDeleteProfile(profile.id);
                           }}
-                          className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center"
+                          className="w-8 h-8 rounded-full bg-white/10 hover:bg-red-500/20 transition-all flex items-center justify-center"
+                          title="Profil löschen"
                         >
-                          <Edit3 className="w-4 h-4" style={{ color: theme.textSecondary }} />
+                          <Trash className="w-4 h-4" style={{ color: theme.textSecondary }} />
                         </button>
-
-                        {profile.id !== 'gast' && (
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteProfile(profile.id);
-                            }}
-                            className="w-8 h-8 rounded-full bg-white/10 hover:bg-red-500/20 transition-all flex items-center justify-center"
-                            title="Profil löschen"
-                          >
-                            <Trash className="w-4 h-4" style={{ color: theme.textSecondary }} />
-                          </button>
-                        )}
-                      </div>
+                      )}
+                    </div>
 
 
                       {/* Edit Profile Icon Button Icon */}
