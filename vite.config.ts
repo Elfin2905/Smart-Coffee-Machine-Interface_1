@@ -6,7 +6,7 @@
   export default defineConfig({
     plugins: [react()],
     base: '/Smart-Coffee-Machine-Interface_1/',
-    resolve: {
+      resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {
         'vaul@1.1.2': 'vaul',
