@@ -223,10 +223,7 @@ const getFavoriteDrinkImageSize = () => {
     'Latte Macchiato',
     'Espresso',
     'Caffè Crema',
-    'Milchkaffee',
-    'Americano',
-    'Milch',
-    'Heißes Wasser'
+    'Milchkaffee'
   ];
 
   const interfaceStyles = [
