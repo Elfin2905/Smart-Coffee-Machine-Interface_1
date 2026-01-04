@@ -73,15 +73,6 @@ interface Profile {
     style: 'Modern',
   },
   {
-    id: 'elena',
-    name: 'Elena',
-    initials: 'EL',
-    color: '#9B59B6',
-    colorTo: '#8E44AD',
-    description: 'Flat White-Fan',
-    style: 'Elegant',
-  },
-  {
     id: 'gast',
     name: 'Gast',
     initials: 'GA',
@@ -116,8 +107,6 @@ interface Profile {
   // Profile-specific favorites
   const [profileFavorites, setProfileFavorites] = useState<{[key: string]: string}>({
     'markus': 'Espresso',
-    'elena': 'Cappuccino',
-    'lena': 'Milch',
     'gast': 'Caffè Crema'
   });
   
