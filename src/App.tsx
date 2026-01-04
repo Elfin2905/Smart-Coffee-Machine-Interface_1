@@ -15,6 +15,8 @@ import { SettingsOverlay } from './components/SettingsOverlay';
 import { ChatOverlay } from './components/ChatOverlay';
 import { SnowfallEffect } from './components/SnowfallEffect';
 import { ColorfulParticles } from './components/ColorfulParticles';
+import { Trash } from 'lucide-react';
+
 
 // Import images
 import {
@@ -39,6 +41,15 @@ const milchSchaumImage = milchSchaum;
 
 
 
+
+
+export default function App() {
+  // Default Profile State - Load from localStorage on initial render
+  const [defaultProfileId, setDefaultProfileId] = useState<string | null>(() => {
+    return localStorage.getItem('defaultProfileId');
+  });
+
+  
 // Profile Types
 interface Profile {
   id: string;
@@ -49,20 +60,8 @@ interface Profile {
   description: string;
   style: string;
 }
-
-
-
-
-export default function App() {
-  // Default Profile State - Load from localStorage on initial render
-  const [defaultProfileId, setDefaultProfileId] = useState<string | null>(() => {
-    return localStorage.getItem('defaultProfileId');
-  });
-
   //clare storafe for profiles
  
-
-
   const [profiles, setProfiles] = useState<Profile[]>([
   {
     id: 'markus',
@@ -122,23 +121,44 @@ export default function App() {
     'gast': 'Caffè Crema'
   });
   
-  const favoriteDrink = profileFavorites[activeProfile.id] || 'Espresso';
-  
-// Get the image for the favorite drink
+const favoriteDrink = profileFavorites[activeProfile.id] || 'Espresso';
+
 const getFavoriteDrinkImage = () => {
-  const drinkName = favoriteDrink.toLowerCase();
-  if (drinkName.includes('espresso')) return espressoImage;
+  const drinkName = favoriteDrink.toLowerCase().split('(')[0].trim();
+
   if (drinkName.includes('cappuccino')) return cappuccinoImage;
   if (drinkName.includes('latte') || drinkName.includes('macchiato')) return latteMacchiatoImage;
   if (drinkName.includes('crema')) return caffeCremaImage;
   if (drinkName.includes('milchkaffee')) return milchKaffeeImage;
   if (drinkName.includes('americano')) return americanoImage;
-  if (drinkName.includes('milch') && !drinkName.includes('milchkaffee')) return milchKaffeeImage;
+  if (drinkName.includes('milch') && !drinkName.includes('milchkaffee')) return milchSchaumImage;
   if (drinkName.includes('wasser') || drinkName.includes('heißes')) return wasserImage;
-  if (drinkName.includes('flat white')) return cappuccinoImage;
-  if (drinkName.includes('mocha')) return latteMacchiatoImage;
 
-  return cappuccinoImage;
+  return espressoImage;
+};
+
+const getFavoriteDrinkImageSize = () => {
+  const drinkName = favoriteDrink.toLowerCase().split('(')[0].trim();
+
+  if (drinkName.includes('espresso')) return 'w-24 h-24';
+  if (drinkName.includes('cappuccino')) return 'w-28 h-28';
+
+  // Latte ist hoch → schmaler + höher + etwas nach unten
+  if (drinkName.includes('latte') || drinkName.includes('macchiato')) {
+    return 'w-24 h-32 translate-y-2';
+  }
+
+  if (drinkName.includes('crema')) return 'w-28 h-28';
+  if (drinkName.includes('milchkaffee')) return 'w-28 h-28';
+  if (drinkName.includes('americano')) return 'w-28 h-28';
+  if (drinkName.includes('milch') && !drinkName.includes('milchkaffee')) return 'w-28 h-28';
+
+  if (drinkName.includes('wasser') || drinkName.includes('heißes')) return 'w-24 h-24';
+
+  if (drinkName.includes('flat white')) return 'w-28 h-28';
+  if (drinkName.includes('mocha')) return 'w-24 h-36 translate-y-3';
+
+  return 'w-28 h-28';
 };
   
   // Customization states
@@ -203,15 +223,14 @@ const getFavoriteDrinkImage = () => {
     'Latte Macchiato',
     'Espresso',
     'Caffè Crema',
-    'Milchkaffee',
-    'Americano',
-    'Milch',
-    'Heißes Wasser'
+    'Milchkaffee'
   ];
 
   const interfaceStyles = [
     { name: 'Modern', icon: '✨' },
     { name: 'Elegant', icon: '💎' },
+    { name: 'Verspielt', icon: '🎨' },
+    { name: 'Vintage', icon: '🕰️' },
     { name: 'Weihnachten', icon: '🎄' }
   ];
 
@@ -225,6 +244,36 @@ const getFavoriteDrinkImage = () => {
       setIsPreparing(false);
     }, 5000);
   };
+
+  const handleDeleteProfile = (profileId: string) => {
+  if (profileId === 'gast') return;
+
+  // falls default gelöscht wird
+  if (defaultProfileId === profileId) {
+    setDefaultProfileId(null);
+    localStorage.removeItem('defaultProfileId');
+  }
+
+  // Favorites löschen
+  setProfileFavorites((prev) => {
+    const copy = { ...prev };
+    delete copy[profileId];
+    return copy;
+  });
+
+  // Profile löschen + active fallback (WICHTIG: alles in setProfiles)
+  setProfiles((prev) => {
+    const next = prev.filter((p) => p.id !== profileId);
+
+    // wenn aktives Profil gelöscht wurde -> fallback setzen
+    if (activeProfile.id === profileId) {
+      const fallback = next.find((p) => p.id === 'gast') || next[0];
+      if (fallback) setActiveProfile(fallback);
+    }
+
+    return next;
+  });
+};
 
   const handleDrinkSelect = (drink: string) => {
     setSelectedDrink(drink);
@@ -448,12 +497,13 @@ const getFavoriteDrinkImage = () => {
               <div className="absolute bottom-20 left-32 w-1 h-1 bg-white/20 rounded-full animate-bounce" style={{ animationDuration: '5s', animationDelay: '0.5s' }}></div>
               
               {/* Decorative Coffee Image */}
-              <div className={`absolute ${favoriteDrink === 'Espresso' ? 'top-[52px] right-8' : 'top-0 right-0'} opacity-80 pointer-events-none ${favoriteDrink === 'Latte Macchiato' || favoriteDrink === 'Espresso' ? 'w-24 h-24' : 'w-48 h-48'}`}>
-                <ImageWithFallback 
-                  src={getFavoriteDrinkImage()}
-                  alt="Coffee"
-                  className="w-full h-full object-contain"
-                />
+              {/* Fixierter Bild-Container wie in deiner Skizze */}
+              <div className="absolute top-4 right-8 w-32 h-32 flex items-center justify-center pointer-events-none">
+              <ImageWithFallback
+              src={getFavoriteDrinkImage()}
+              alt={favoriteDrink}
+              className={`object-contain drop-shadow-2xl transition-transform duration-700 ${getFavoriteDrinkImageSize()}`}
+              />
               </div>
               
               {/* Content */}
@@ -583,7 +633,7 @@ const getFavoriteDrinkImage = () => {
               <div className="text-xl relative z-10 transition-transform duration-300" style={{ color: theme.textPrimary }}>Milch & Wasser</div>
             </div>
 
-            {/* Barista Modus */}
+            {/* Barista Modus icon ersetzen */}
             <div 
               className={`group rounded-3xl p-8 relative overflow-hidden ${theme.glassEffect} border transition-all duration-500 cursor-pointer active:scale-95`}
               style={{
@@ -616,7 +666,7 @@ const getFavoriteDrinkImage = () => {
             <Home className="w-10 h-10" />
           </button>
 
-          {/* Pflege */}
+          {/* Pflege  bearbeiten icon*/} 
           <button 
             className="text-white/40 active:text-white transition-all active:scale-90"
             onClick={() => setShowPflege(true)}
@@ -674,7 +724,42 @@ const getFavoriteDrinkImage = () => {
                         background: activeProfile.id === profile.id ? theme.accentGlow : 'rgba(255, 255, 255, 0.05)'
                       }}
                     >
-                      {/* Edit Profile Icon */}
+                      {/* Delete Button (unter Edit) */}
+                      <div className="absolute top-3 right-3 flex flex-col gap-2 z-10">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsEditMode(true);
+                          setEditingProfileId(profile.id);
+                          setNewProfileName(profile.name);
+                          setNewProfileColor(profile.color);
+                          setNewProfileColorTo(profile.colorTo);
+                          setNewProfileCoffee(profileFavorites[profile.id] || 'Espresso');
+                          setNewProfileStyle(profile.style);
+                          setShowProfileOverlay(false);
+                          setShowAddProfile(true);
+                        }}
+                        className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center"
+                      >
+                        <Edit3 className="w-4 h-4" style={{ color: theme.textSecondary }} />
+                      </button>
+
+                      {profile.id !== 'gast' && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteProfile(profile.id);
+                          }}
+                          className="w-8 h-8 rounded-full bg-white/10 hover:bg-red-500/20 transition-all flex items-center justify-center"
+                          title="Profil löschen"
+                        >
+                          <Trash className="w-4 h-4" style={{ color: theme.textSecondary }} />
+                        </button>
+                      )}
+                    </div>
+
+
+                      {/* Edit Profile Icon Button Icon */}
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -745,7 +830,11 @@ const getFavoriteDrinkImage = () => {
 
               {/* Add New Profile Edit */}
               
+              {/* Add New Lösch Button */}
+              {/* Edit Profile Icon Button */}
+              
 
+              
               {/* Add New Profile Button */}
               <button 
                 onClick={(e) => {
@@ -936,7 +1025,7 @@ const getFavoriteDrinkImage = () => {
                     </div>
                   )}
 
-                  {/* Action Buttons */}
+                  {/* Action Buttons Löschen hinzufügen */}
                   {!showKeyboard && (
                     <div className="flex gap-3 pt-2">
                       <button
@@ -1267,6 +1356,7 @@ const getFavoriteDrinkImage = () => {
                     }}
                     className="group p-4 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-[#D4A373]/50 transition-all active:scale-95 overflow-hidden"
                   >
+                     {/* main menu Kaffee Klassijer */}
                     <div className="flex flex-col items-center gap-3">
                       <div className="w-20 h-20 rounded-xl overflow-hidden">
                         <ImageWithFallback 
