@@ -396,8 +396,8 @@ const getFavoriteDrinkImageSize = () => {
       <div 
         className="relative overflow-hidden rounded-3xl flex flex-col shadow-2xl"
         style={{
-          width: '1024px',
-          height: '600px',
+          width: 'var(--machine-display-width, 1024px)',
+          height: 'var(--machine-display-height, 600px)',
           background: theme.backgroundGradient || theme.background,
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05)',
           fontFamily: theme.fontFamily

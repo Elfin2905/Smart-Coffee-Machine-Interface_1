@@ -4,6 +4,8 @@
 
 :root {
   --font-size: 16px;
+  --machine-display-width: 1024px;
+  --machine-display-height: 600px;
   --background: #ffffff;
   --foreground: oklch(0.145 0 0);
   --card: #ffffff;
